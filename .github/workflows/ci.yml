@@ -2,13 +2,12 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ master,shadowOkage-patch-1 ]
+    branches: [ master, shadowOkage-patch-1 ]
   pull_request:
     branches: [ master, shadowOkage-patch-1 ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -17,10 +16,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -34,7 +33,7 @@ jobs:
       run: npm run build --prod
 
     - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/your-branch'
       run: |
         npm install -g angular-cli-ghpages
         ngh --dir=dist/TEV_code
