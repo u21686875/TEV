@@ -39,6 +39,6 @@ jobs:
       if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/shadowOkage-patch-1'
       run: |
         npm install -g angular-cli-ghpages
-        ngh --dir=dist/TEV
+        ngh --dir=dist/TEV_code
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
