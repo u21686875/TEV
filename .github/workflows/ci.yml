@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [18.x, 20.x]
 
     steps:
     - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
       run: npm run build --prod
 
     - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/your-branch'
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/shadowOkage-patch-1'
       run: |
         npm install -g angular-cli-ghpages
         ngh --dir=dist/TEV_code
