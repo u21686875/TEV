@@ -26,6 +26,9 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Install Puppeteer dependencies
+      run: sudo apt-get install -y libnss3 lsof
+
     - name: Run tests
       run: npm test
 
