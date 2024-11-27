@@ -1,0 +1,23 @@
+.register-container {
+    display: flex;
+    min-height: 100vh;
+
+    .logo-side {
+        width: 50%;
+        background-color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        .x-logo {
+            width: 16rem;
+            height: 16rem;
+            color: white;
+        }
+    }
+
+    .form-side {
+        width: 50%;
+        padding: 2rem;
+    }
+}
