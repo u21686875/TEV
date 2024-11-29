@@ -1,0 +1,46 @@
+<div class ="register-container">
+    <div class="logo-side">
+        <!-- X logo -->
+        <svg viewBox="0 0 24 24" class="x-logo">
+            <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+    </div>
+
+    <!-- Right side with login form -->
+    <div class = "form-side">
+        <h1>Sign in to X</h1>
+
+        <form (ngSubmit)="onSubmit()">
+
+            <div class = "form-group">
+                <input
+                    type = "email"
+                    [(ngModel)]="loginData.email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                >
+            </div>
+
+            <div class = "form-group">
+                <input
+                    type = "password"
+                    [(ngModel)]="loginData.password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                >
+            </div>
+
+
+            <button type="submit">Sign in</button>
+        </form>
+
+        <p class = "login-link">
+            Don't have an account?
+            <a href="/login">Log in</a>
+        </p>
+
+    </div>
+
+</div>
