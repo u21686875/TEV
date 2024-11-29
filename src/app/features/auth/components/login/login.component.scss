@@ -72,4 +72,35 @@
             }
         }
     }
+
+    .error-message {
+        background-color: #ffebee;
+        color: #d32f2f;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+    }
+
+    .form-group {
+        input.error {
+            border-color: #d32f2f;
+
+            &:focus {
+                border-color: #d32f2f;
+                box-shadow: 0 0 0 1px rgba(211, 47, 47, 0.2);
+            }
+        }
+    }
+    button {
+        &.loading {
+            background-color: #89cff3;
+            cursor: not-allowed;
+        }
+
+        &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    }
 }

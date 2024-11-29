@@ -10,6 +10,11 @@
     <div class = "form-side">
         <h1>Sign in to X</h1>
 
+        <!-- Error message display -->
+        <div *ngIf = "errorMessage" class = "error-message">
+            {{errorMessage}}
+        </div>
+
         <form (ngSubmit)="onSubmit()">
 
             <div class = "form-group">
@@ -18,6 +23,7 @@
                     [(ngModel)]="loginData.email"
                     name="email"
                     placeholder="Email"
+                    [class.error] = 'errorMessage'
                     required
                 >
             </div>
@@ -28,17 +34,23 @@
                     [(ngModel)]="loginData.password"
                     name="password"
                     placeholder="Password"
+                    [class.error] = 'errorMessage'
                     required
                 >
             </div>
 
-
-            <button type="submit">Sign in</button>
+            <button
+                type="submit"
+                [disabled]="isLoading"
+                [class.loading]="isLoading"
+            >
+                {{isLoading ? 'Signing in...' : 'Sign in'}}
+            </button>
         </form>
 
-        <p class = "login-link">
+        <p class = "register-link">
             Don't have an account?
-            <a href="/login">Log in</a>
+            <a href="/register">Sign up</a>
         </p>
 
     </div>
