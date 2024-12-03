@@ -26,6 +26,10 @@ export class LoginComponent  {
       private authService: AuthService
   ) {
       // Initialize the form with validators
+      // check localStorage for any previously saved preference
+      const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
+      const savedEmail = savedRememberMe ? localStorage.getItem('userEmail') : '';
+
       this.loginForm = this.fb.group({
           email: ['', [
               Validators.required,
@@ -38,7 +42,17 @@ export class LoginComponent  {
               Validators.minLength(8),
               // Ensure password has at least one number and one letter
               Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d).+$/)
-          ]]
+          ]],
+          rememberMe: [savedRememberMe] // Initialize with saved preference
+      });
+
+      // Listen for changes to remember me checkbox
+      this.loginForm.get('rememberMe')?.valueChanges.subscribe(checked => {
+        if(!checked) {
+          // if unchecked, clear stored credentials
+          localStorage.removeItem('rememberMe');
+          localStorage.removeItem('userEmail');
+        }
       });
   }
 
@@ -75,23 +89,34 @@ export class LoginComponent  {
   }
 
   onSubmit() {
+    if(this.loginForm.invalid) {
       // Mark all fields as touched to show all validation errors
       Object.keys(this.loginForm.controls).forEach(key => {
           const control = this.loginForm.get(key);
           control?.markAsTouched();
       });
+      return;
+    }
 
-      if (this.loginForm.invalid) {
-          return;
-      }
+    this.isLoading = true;
+    this.errorMessage = '';
 
-      this.isLoading = true;
-      this.errorMessage = '';
+    try {
+        const { email, password, rememberMe } = this.loginForm.value;
 
-      try {
-          const { email, password } = this.loginForm.value;
-          this.authService.login(email, password);
-          console.log('Login successful');
+        // Store preferences if remember me is checked
+        if(rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+          localStorage.setItem('userEmail', email);
+        } else {
+          // Clear stored preferences if not checked
+          localStorage.removeItem('rememberMe');
+          localStorage.removeItem('userEmail');
+        }
+        
+        this.authService.login(email, password);
+        console.log('Login successful');
+      
       } catch (error) {
           if (error instanceof Error) {
               this.errorMessage = error.message;

@@ -124,4 +124,30 @@
 
         }
     }
+
+    .remember-me-container {
+        margin: 1rem 0;
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            input[type="checkbox"] {
+                margin-right: 0.5rem;
+                width: 1.125rem;
+                height: 1.125rem;
+                cursor: pointer;
+            }
+
+            .checkbox-text {
+                color: #536471;
+                font-size: 0.875rem;
+            }
+
+            &:hover .checkbox-text {
+                color: #000;
+            }
+        }
+    }
 }
