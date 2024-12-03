@@ -1,58 +1,59 @@
-<div class ="register-container">
+<div class="login-container">
+    <!-- Logo side remains the same -->
     <div class="logo-side">
-        <!-- X logo -->
         <svg viewBox="0 0 24 24" class="x-logo">
             <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
         </svg>
     </div>
 
-    <!-- Right side with login form -->
-    <div class = "form-side">
+    <div class="form-side">
         <h1>Sign in to X</h1>
-
-        <!-- Error message display -->
-        <div *ngIf = "errorMessage" class = "error-message">
-            {{errorMessage}}
+        
+        <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
         </div>
 
-        <form (ngSubmit)="onSubmit()">
-
-            <div class = "form-group">
-                <input
-                    type = "email"
-                    [(ngModel)]="loginData.email"
-                    name="email"
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <input 
+                    type="email" 
+                    formControlName="email"
                     placeholder="Email"
-                    [class.error] = 'errorMessage'
-                    required
+                    (focus)="onFieldFocus('email')"
+                    [class.error]="loginForm.get('email')?.invalid && isFieldTouched.email"
                 >
+                <div class="validation-message" 
+                     *ngIf="loginForm.get('email')?.invalid && isFieldTouched.email">
+                    {{ getErrorMessage('email') }}
+                </div>
             </div>
 
-            <div class = "form-group">
-                <input
-                    type = "password"
-                    [(ngModel)]="loginData.password"
-                    name="password"
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    formControlName="password"
                     placeholder="Password"
-                    [class.error] = 'errorMessage'
-                    required
+                    (focus)="onFieldFocus('password')"
+                    [class.error]="loginForm.get('password')?.invalid && isFieldTouched.password"
                 >
+                <div class="validation-message" 
+                     *ngIf="loginForm.get('password')?.invalid && isFieldTouched.password">
+                    {{ getErrorMessage('password') }}
+                </div>
             </div>
 
-            <button
-                type="submit"
-                [disabled]="isLoading"
+            <button 
+                type="submit" 
+                [disabled]="isLoading || loginForm.invalid"
                 [class.loading]="isLoading"
             >
-                {{isLoading ? 'Signing in...' : 'Sign in'}}
+                {{ isLoading ? 'Signing in...' : 'Sign in' }}
             </button>
         </form>
 
-        <p class = "register-link">
-            Don't have an account?
+        <div class="register-link">
+            Don't have an account? 
             <a href="/register">Sign up</a>
-        </p>
-
+        </div>
     </div>
-
 </div>

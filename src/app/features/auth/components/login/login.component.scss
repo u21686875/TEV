@@ -103,4 +103,25 @@
             cursor: not-allowed;
         }
     }
+
+    .validation-message {
+        color: #d32f2f;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+        padding-left: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem; // Increased to accommodate error message
+        input.error {
+            border-color: #d32f2f;
+            background-color: #fff2f2;
+
+            &:focus {
+                border-color: #d32f2f;
+                box-shadow: 0 0 0 1px rgba(211, 47, 47, 0.2);
+            }
+
+        }
+    }
 }
