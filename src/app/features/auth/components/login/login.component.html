@@ -19,26 +19,52 @@
                     type="email" 
                     formControlName="email"
                     placeholder="Email"
-                    (focus)="onFieldFocus('email')"
-                    [class.error]="loginForm.get('email')?.invalid && isFieldTouched.email"
+                    [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
                 >
-                <div class="validation-message" 
-                     *ngIf="loginForm.get('email')?.invalid && isFieldTouched.email">
+                <div class="validation-message"
+                    *ngIf="loginForm.get('email')?.invalid && isFieldTouched.email">
                     {{ getErrorMessage('email') }}
                 </div>
             </div>
-
-            <div class="form-group">
-                <input 
-                    type="password" 
-                    formControlName="password"
-                    placeholder="Password"
-                    (focus)="onFieldFocus('password')"
-                    [class.error]="loginForm.get('password')?.invalid && isFieldTouched.password"
-                >
-                <div class="validation-message" 
-                     *ngIf="loginForm.get('password')?.invalid && isFieldTouched.password">
-                    {{ getErrorMessage('password') }}
+        
+            <div class="form-group password-group">
+                <div class="password-input-wrapper">
+                    <input
+                        [type]="showPassword ? 'text' : 'password'"
+                        formControlName="password"
+                        placeholder="Password"
+                        [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                    >
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        (click)="togglePasswordVisibility()"
+                    >
+                        <svg *ngIf="!showPassword" viewBox="0 0 24 24" class="eye-icon">
+                            <!-- Eye icon for show password -->
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                        <svg *ngIf="showPassword" viewBox="0 0 24 24" class="eye-icon">
+                            <!-- Eye-slash icon for hide password -->
+                            <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+                        </svg>
+                    </button>
+                </div>
+        
+                <!-- Password strength indicator -->
+                <div class="password-strength" *ngIf="loginForm.get('password')?.value">
+                    <div class="strength-bar">
+                        <div 
+                            class="strength-fill"
+                            [style.width.%]="passwordStrength"
+                            [style.background-color]="getPasswordStrengthColor()"
+                        ></div>
+                    </div>
+                    <span class="strength-text" [style.color]="getPasswordStrengthColor()">
+                        {{ passwordStrength <= 25 ? 'Weak' :
+                            passwordStrength <= 50 ? 'Fair' :
+                            passwordStrength <= 75 ? 'Good' : 'Strong' }}
+                    </span>
                 </div>
             </div>
 
@@ -62,7 +88,7 @@
         </form>
 
         <div class="register-link">
-            Don't have an account? 
+            Don't have an account?
             <a href="/register">Sign up</a>
         </div>
     </div>

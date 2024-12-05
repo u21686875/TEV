@@ -150,4 +150,69 @@
             }
         }
     }
+
+    .password-group {
+        position: relative;
+    
+        .password-input-wrapper {
+            position: relative;
+            
+            .toggle-password {
+                position: absolute;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                
+                .eye-icon {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    fill: #536471;
+                }
+    
+                &:hover .eye-icon {
+                    fill: #1DA1F2;
+                }
+            }
+        }
+    
+        .password-strength {
+            margin-top: 0.5rem;
+    
+            .strength-bar {
+                height: 4px;
+                background-color: #eee;
+                border-radius: 2px;
+                overflow: hidden;
+                margin-bottom: 0.25rem;
+    
+                .strength-fill {
+                    height: 100%;
+                    transition: width 0.3s ease, background-color 0.3s ease;
+                }
+            }
+    
+            .strength-text {
+                font-size: 0.75rem;
+            }
+        }
+    }
+    
+    .forgot-password {
+        text-align: right;
+        margin: 1rem 0;
+    
+        a {
+            color: #1DA1F2;
+            text-decoration: none;
+            font-size: 0.875rem;
+    
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 }

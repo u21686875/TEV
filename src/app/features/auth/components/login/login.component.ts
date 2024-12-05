@@ -14,6 +14,8 @@ export class LoginComponent  {
   loginForm: FormGroup;
   errorMessage: string = '';
   isLoading: boolean = false;
+  showPassword: boolean = false;
+  passwordStrength: number = 0;
   
   // Track whether fields have been touched and interacted with
   isFieldTouched = {
@@ -31,7 +33,7 @@ export class LoginComponent  {
       const savedEmail = savedRememberMe ? localStorage.getItem('userEmail') : '';
 
       this.loginForm = this.fb.group({
-          email: ['', [
+          email: [savedEmail, [
               Validators.required,
               Validators.email,
               // Custom validator for X's email format
@@ -46,6 +48,11 @@ export class LoginComponent  {
           rememberMe: [savedRememberMe] // Initialize with saved preference
       });
 
+      // Monitor password changes for strength indicator
+      this.loginForm.get('password')?.valueChanges.subscribe(password => {
+        this.updatePasswordStrength(password);
+      })
+
       // Listen for changes to remember me checkbox
       this.loginForm.get('rememberMe')?.valueChanges.subscribe(checked => {
         if(!checked) {
@@ -54,6 +61,34 @@ export class LoginComponent  {
           localStorage.removeItem('userEmail');
         }
       });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  updatePasswordStrength(password : string): void {
+    let strength = 0;
+
+    if(!password) {
+      this.passwordStrength = 0;
+      return;
+    }
+
+    // Increment strength for each criteria met
+    if (password.length >= 8) strength += 25;
+    if (/[A-Z]/.test(password)) strength += 25;
+    if (/[0-9]/.test(password)) strength += 25;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+
+    this.passwordStrength = strength;
+  }
+
+  getPasswordStrengthColor(): string {
+    if (this.passwordStrength <= 25) return '#ff4444';
+    if (this.passwordStrength <= 50) return '#ffbb33';
+    if (this.passwordStrength <= 75) return '#00C851';
+    return '#007E33';
   }
 
   // Helper methods to check field validity
