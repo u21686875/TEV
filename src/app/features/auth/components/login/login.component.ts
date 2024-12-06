@@ -11,6 +11,11 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent  {
+  captchaText: string = '';
+  userCaptchaInput: string = '';
+  showCaptcha: boolean = false;
+  failedAttempts: number = 0;
+
   loginForm: FormGroup;
   errorMessage: string = '';
   isLoading: boolean = false;
@@ -123,6 +128,15 @@ export class LoginComponent  {
       this.isFieldTouched[field] = true;
   }
 
+  private generateCaptcha() {
+    // Simple CAPTCHA: 6 random letters/numbers
+    const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+    this.captchaText = Array(6)
+      .fill(null)
+      .map(() => characters.charAt(Math.floor(Math.random() * characters.length)))
+      .join('');
+  }
+
   onSubmit() {
     if(this.loginForm.invalid) {
       // Mark all fields as touched to show all validation errors
@@ -131,6 +145,22 @@ export class LoginComponent  {
           control?.markAsTouched();
       });
       return;
+    }
+
+    if(this.failedAttempts >= 2) {
+      if(!this.showCaptcha) {
+        this.showCaptcha = true;
+        this.generateCaptcha();
+        return;
+      }
+
+      // Verify CAPTCHA
+      if(this.userCaptchaInput !== this.captchaText) {
+        this.errorMessage = 'Incorrect CAPTCHA. Please try again.';
+        this.generateCaptcha();
+        this.userCaptchaInput = '';
+        return;
+      }
     }
 
     this.isLoading = true;

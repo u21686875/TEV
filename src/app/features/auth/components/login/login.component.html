@@ -78,6 +78,19 @@
                 </label>
             </div>
 
+            <div *ngIf="showCaptcha" class="captcha-container">
+                <div class="captcha-display">
+                    {{ captchaText  }}
+                </div>
+                <input 
+                    type="text"
+                    [(ngModel)]="userCaptchaInput"
+                    [ngModelOptions]="{standalone: true}"
+                    placeholder="Enter the text above"
+                    class="captcha-input"
+                >
+            </div>
+
             <button 
                 type="submit" 
                 [disabled]="isLoading || loginForm.invalid"
