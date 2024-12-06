@@ -206,7 +206,7 @@ private updateValidators() {
       .join('');
   }
 
-  onSubmit() {
+  async onSubmit() {
     if(this.loginForm.invalid) {
       // Mark all fields as touched to show all validation errors
       Object.keys(this.loginForm.controls).forEach(key => {
@@ -248,7 +248,16 @@ private updateValidators() {
           localStorage.removeItem('userEmail');
         }
         
-        this.authService.login(email, password);
+        await this.authService.login({
+          type: this.currentLoginMethod,
+          identifier: this.currentLoginMethod === 'phone' 
+              ? {
+                  countryCode: this.loginForm.get('countryCode')?.value,
+                  number: this.loginForm.get('loginIdentifier')?.value
+                }
+              : this.loginForm.get('loginIdentifier')?.value,
+          password: password
+      });
         console.log('Login successful');
       
       } catch (error) {
