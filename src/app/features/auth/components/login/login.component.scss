@@ -278,4 +278,100 @@
             }
         }
     }
+
+    .social-login-container {
+        margin: 1rem 0;
+    
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 1.5rem 0;
+    
+            &::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: #eff3f4;
+            }
+    
+            .divider-text {
+                background: white;
+                padding: 0 1rem;
+                color: #536471;
+                position: relative;
+                font-size: 0.875rem;
+            }
+        }
+    
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #eff3f4;
+            border-radius: 9999px;
+            background: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #0f1419;
+            cursor: pointer;
+            transition: background-color 0.2s;
+    
+            &:hover {
+                background-color: #f7f9f9;
+            }
+    
+            .provider-icon {
+                width: 1.25rem;
+                height: 1.25rem;
+                margin-right: 0.75rem;
+            }
+    
+            // Specific styling for Apple button
+            &.apple-button {
+                background: black;
+                color: white;
+                
+                .provider-icon {
+                    color: white;
+                }
+    
+                &:hover {
+                    background-color: #333;
+                }
+            }
+        }
+    }
+
+    .login-method-toggle {
+        display: flex;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eff3f4;
+    
+        .method-button {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: #536471;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+    
+            &:hover {
+                background-color: rgba(29, 155, 240, 0.1);
+            }
+    
+            &.active {
+                color: #1d9bf0;
+                border-bottom-color: #1d9bf0;
+            }
+        }
+    }
 }

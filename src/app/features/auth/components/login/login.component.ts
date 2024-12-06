@@ -11,6 +11,10 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent  {
+
+  loginMethods = ['email','phone','username'] as const;
+  currentLoginMethod: typeof this.loginMethods[number] = 'email';
+
   captchaText: string = '';
   userCaptchaInput: string = '';
   showCaptcha: boolean = false;
@@ -66,7 +70,52 @@ export class LoginComponent  {
           localStorage.removeItem('userEmail');
         }
       });
+
+      if(savedEmail) {
+        this.currentLoginMethod = 'email';
+        this.updateValidators();
+      }
   }
+
+  switchLoginMethod(method: typeof this.loginMethods[number]) {
+    this.currentLoginMethod = method;
+    this.updateValidators();
+    
+    // Clear the field when switching methods
+    this.loginForm.get('loginIdentifier')?.setValue('');
+    this.loginForm.get('loginIdentifier')?.markAsUntouched();
+    this.errorMessage = '';
+  }
+
+private updateValidators() {
+  const control = this.loginForm.get('loginIdentifier');
+  if (!control) return;
+
+  switch (this.currentLoginMethod) {
+      case 'email':
+          control.setValidators([
+              Validators.required,
+              Validators.email,
+              Validators.pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+          ]);
+          break;
+      case 'phone':
+          control.setValidators([
+              Validators.required,
+              // Basic phone validation - you might want to adjust this
+              Validators.pattern(/^\+?[1-9]\d{1,14}$/)
+          ]);
+          break;
+      case 'username':
+          control.setValidators([
+              Validators.required,
+              // Username validation - adjust pattern as needed
+              Validators.pattern(/^[A-Za-z0-9_]{4,15}$/)
+          ]);
+          break;
+  }
+  control.updateValueAndValidity();
+}
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -97,19 +146,26 @@ export class LoginComponent  {
   }
 
   // Helper methods to check field validity
-  getErrorMessage(fieldName: 'email' | 'password'): string {
+  getErrorMessage(fieldName: 'loginIdentifier' | 'password'): string {
       const control = this.loginForm.get(fieldName);
       if (!control) return '';
 
       if (control.hasError('required')) {
-          return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+          return `${this.getFieldLabel()} is required`;
       }
 
-      if (fieldName === 'email') {
-          if (control.hasError('email') || control.hasError('pattern')) {
-              return 'Please enter a valid email address';
-          }
-      }
+      if (fieldName === 'loginIdentifier') {
+        if (this.currentLoginMethod === 'email' && 
+            (control.hasError('email') || control.hasError('pattern'))) {
+            return 'Please enter a valid email address';
+        }
+        if (this.currentLoginMethod === 'phone' && control.hasError('pattern')) {
+            return 'Please enter a valid phone number';
+        }
+        if (this.currentLoginMethod === 'username' && control.hasError('pattern')) {
+            return 'Username must be 4-15 characters and can only contain letters, numbers, and underscores';
+        }
+    }
 
       if (fieldName === 'password') {
           if (control.hasError('minlength')) {
@@ -123,10 +179,23 @@ export class LoginComponent  {
       return '';
   }
 
-  // Mark fields as touched when focused
-  onFieldFocus(field: 'email' | 'password') {
-      this.isFieldTouched[field] = true;
+  private getFieldLabel(): string {
+    switch(this.currentLoginMethod) {
+      case 'email': return 'Email';
+      case 'phone': return 'Phone number';
+      case 'username': return 'Username';
+      default: return 'Login identifier';
+    }
   }
+
+  // Mark fields as touched when focused
+  onFieldFocus(field: 'loginIdentifier' | 'password') {
+    if (field === 'loginIdentifier') {
+        this.isFieldTouched.email = true; // Reusing existing property
+    } else {
+        this.isFieldTouched.password = true;
+    }
+}
 
   private generateCaptcha() {
     // Simple CAPTCHA: 6 random letters/numbers
