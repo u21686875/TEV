@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {User} from '../models/user.model'
+import { User } from '../../features/shared/models/user.model';
 
 interface PhoneNumber {
   countryCode: string;

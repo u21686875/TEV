@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import {FormsModule} from '@angular/forms'
-import {User} from '../../models/user.model'
-import { AuthService } from '../../services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth/auth.service';
+import { User } from '../../shared/models/user.model';
 
 @Component({
   selector: 'app-register',
